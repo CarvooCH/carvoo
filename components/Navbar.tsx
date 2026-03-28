@@ -3,7 +3,7 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/85 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
 
-        {/* Logo größer als Navbar */}
+        {/* Logo */}
         <a href="#home" className="flex items-center">
           <img
             src="/logo.png"
