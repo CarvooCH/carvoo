@@ -1,71 +1,53 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-export async function GET() {
-  return NextResponse.json({
-    success: true,
-    message: "API funktioniert",
-    hasKey: !!process.env.RESEND_API_KEY,
-  });
-}
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const body = await request.json();
-    const { name, email, budget, car, requirements } = body;
+    const data = await req.json();
 
-    if (!process.env.RESEND_API_KEY) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "RESEND_API_KEY fehlt in .env.local",
-        },
-        { status: 500 }
-      );
-    }
+    const {
+      name,
+      email,
+      phone,
+      budget,
+      carType,
+      fuelType,
+      transmission,
+      message,
+    } = data;
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    const emailContent = `
+Neue Carvoo Anfrage 🚀
 
-    const result = await resend.emails.send({
+Name: ${name}
+Email: ${email}
+Telefon: ${phone || "-"}
+
+Budget: ${budget} CHF
+
+Fahrzeugtyp: ${carType || "-"}
+Antrieb: ${fuelType || "-"}
+Getriebe: ${transmission || "-"}
+
+Wünsche:
+${message || "-"}
+`;
+
+    await resend.emails.send({
       from: "Carvoo <onboarding@resend.dev>",
-      to: ["info@carvoo.ch"],
+      to: "info@carvoo.ch",
       subject: "Neue Carvoo Anfrage",
-      html: `
-        <h2>Neue Carvoo Anfrage</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Budget:</strong> ${budget}</p>
-        <p><strong>Wunschauto:</strong> ${car}</p>
-        <p><strong>Anforderungen:</strong> ${requirements}</p>
-      `,
+      text: emailContent,
     });
 
-    console.log("RESEND RESULT:", result);
-
-    if ((result as { error?: unknown }).error) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Resend hat einen Fehler zurückgegeben.",
-          result,
-        },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json({
-      success: true,
-      message: "Anfrage erfolgreich gesendet.",
-      result,
-    });
+    return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Fehler beim Senden der Anfrage:", error);
+    console.error(error);
 
     return NextResponse.json(
-      {
-        success: false,
-        message: error instanceof Error ? error.message : "Unbekannter Fehler",
-      },
+      { error: "Fehler beim Senden" },
       { status: 500 }
     );
   }

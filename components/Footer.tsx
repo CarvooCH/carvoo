@@ -1,17 +1,22 @@
 export default function Footer() {
   return (
-    <footer className="border-t border-slate-200 bg-white">
-      <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-10 text-sm text-slate-600 md:flex-row md:items-center md:justify-between lg:px-8">
-        <div>
-          <p className="font-semibold text-slate-900">Carvoo</p>
-          <p className="mt-1">Auto-Suchservice für die Schweiz</p>
-        </div>
+    <footer className="border-t border-slate-200 bg-white px-6 py-10 lg:px-8">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 text-sm text-slate-500 md:flex-row">
+        <img src="/logo.png" alt="Carvoo" className="h-8 w-auto" />
 
-        <div className="flex flex-col gap-2 md:items-end">
-          <a href="mailto:info@carvoo.ch" className="hover:text-slate-900">
-            info@carvoo.ch
+        <div className="flex items-center gap-6">
+          <a href="#home" className="hover:text-slate-900">
+            Home
           </a>
-          <p>© 2026 Carvoo. Alle Rechte vorbehalten.</p>
+          <a href="#service" className="hover:text-slate-900">
+            Unser Service
+          </a>
+          <a href="#ablauf" className="hover:text-slate-900">
+            So funktioniert’s
+          </a>
+          <a href="#anfrage" className="hover:text-slate-900">
+            Anfrage
+          </a>
         </div>
       </div>
     </footer>

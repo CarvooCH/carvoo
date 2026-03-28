@@ -1,33 +1,49 @@
 const steps = [
-  "Wünsche und Budget mitteilen",
-  "Carvoo sucht passende Fahrzeuge",
-  "Geeignete Angebote werden geprüft",
-  "Du erhältst klare Vorschläge",
+  {
+    title: "Anfrage senden",
+    text: "Du beschreibst dein Wunschauto, dein Budget und die wichtigsten Anforderungen.",
+  },
+  {
+    title: "Wir suchen und filtern",
+    text: "Wir prüfen passende Fahrzeuge und sortieren unpassende Angebote frühzeitig aus.",
+  },
+  {
+    title: "Passende Optionen erhalten",
+    text: "Du bekommst eine bessere Auswahl, mit der du gezielter entscheiden kannst.",
+  },
 ];
 
 export default function Steps() {
   return (
-    <section id="ablauf" className="border-y border-slate-200 bg-white">
-      <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
+    <section id="ablauf" className="bg-white px-6 py-24 lg:px-8">
+      <div className="mx-auto max-w-7xl">
         <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
-            Ablauf
-          </p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-            So funktioniert&apos;s
+          <span className="text-xs font-semibold uppercase tracking-[0.22em] text-violet-600">
+            So funktioniert’s
+          </span>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
+            In drei einfachen Schritten
           </h2>
+          <p className="mt-4 text-lg leading-8 text-slate-600">
+            Klarer Ablauf, persönliche Unterstützung und weniger Aufwand für
+            dich.
+          </p>
         </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
           {steps.map((step, index) => (
             <div
-              key={step}
-              className="rounded-[2rem] bg-slate-50 p-8 ring-1 ring-slate-200"
+              key={step.title}
+              className="rounded-[28px] border border-slate-200 bg-white p-7 shadow-[0_10px_40px_-18px_rgba(15,23,42,0.14)]"
             >
-              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-slate-900 text-sm font-bold text-white">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-violet-600 text-sm font-semibold text-white shadow-lg shadow-violet-200">
                 {index + 1}
               </div>
-              <p className="text-lg font-semibold leading-7">{step}</p>
+
+              <h3 className="mt-5 text-xl font-semibold text-slate-900">
+                {step.title}
+              </h3>
+              <p className="mt-4 leading-7 text-slate-600">{step.text}</p>
             </div>
           ))}
         </div>
