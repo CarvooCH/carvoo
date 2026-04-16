@@ -4,16 +4,12 @@ import { createLead } from "@/lib/leads";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-type RequestPayload = {
+type ContactPayload = {
   name: string;
   email: string;
   phone: string;
-  budget: string;
-  carType: string;
-  fuelType: string;
-  transmission: string;
-  driveType: string;
-  equipment: string[];
+  contactPreference: string;
+  subject: string;
   message: string;
   landingPage: string;
   referrer: string;
@@ -25,36 +21,20 @@ type RequestPayload = {
 };
 
 function cleanText(value: unknown, maxLength: number) {
-  if (typeof value !== "string") {
-    return "";
-  }
-
+  if (typeof value !== "string") return "";
   return value.trim().slice(0, maxLength);
 }
 
-function cleanList(value: unknown, itemMaxLength: number, maxItems: number) {
-  if (!Array.isArray(value)) return [] as string[];
-  return value
-    .filter((item): item is string => typeof item === "string")
-    .map((item) => cleanText(item, itemMaxLength))
-    .filter(Boolean)
-    .slice(0, maxItems);
-}
-
-function parsePayload(data: unknown): RequestPayload {
+function parsePayload(data: unknown): ContactPayload {
   const source = (data ?? {}) as Record<string, unknown>;
 
   return {
     name: cleanText(source.name, 120),
     email: cleanText(source.email, 180).toLowerCase(),
     phone: cleanText(source.phone, 80),
-    budget: cleanText(source.budget, 20),
-    carType: cleanText(source.carType, 60),
-    fuelType: cleanText(source.fuelType, 60),
-    transmission: cleanText(source.transmission, 60),
-    driveType: cleanText(source.driveType, 60),
-    equipment: cleanList(source.equipment, 80, 20),
-    message: cleanText(source.message, 2500),
+    contactPreference: cleanText(source.contactPreference, 40),
+    subject: cleanText(source.subject, 150),
+    message: cleanText(source.message, 3000),
     landingPage: cleanText(source.landingPage ?? source.landing_page, 300),
     referrer: cleanText(source.referrer, 300),
     utmSource: cleanText(source.utmSource ?? source.utm_source, 120),
@@ -82,9 +62,9 @@ export async function POST(req: Request) {
   try {
     const payload = parsePayload(await req.json());
 
-    if (!payload.name || !payload.email) {
+    if (!payload.name || !payload.email || !payload.message) {
       return NextResponse.json(
-        { error: "Name und E-Mail sind erforderlich." },
+        { error: "Name, E-Mail und Nachricht sind erforderlich." },
         { status: 400 }
       );
     }
@@ -96,37 +76,34 @@ export async function POST(req: Request) {
       );
     }
 
-    const budgetNumber = Number(payload.budget);
-    const budget = Number.isFinite(budgetNumber)
-      ? budgetNumber.toLocaleString("de-CH")
-      : payload.budget || "-";
-    const equipmentText = payload.equipment.length
-      ? payload.equipment.join(", ")
-      : "-";
-    const leadMessage = [
-      payload.message || "",
-      `Antriebsart: ${payload.driveType || "-"}`,
-      `Ausstattung: ${equipmentText}`,
-    ]
-      .filter(Boolean)
-      .join("\n");
+    if (payload.contactPreference === "Anruf" && !payload.phone) {
+      return NextResponse.json(
+        { error: "Bitte gib für Rückruf eine Telefonnummer an." },
+        { status: 400 }
+      );
+    }
+
+    const mergedMessage = [
+      `Kontaktweg: ${payload.contactPreference || "E-Mail"}`,
+      payload.message,
+    ].join("\n");
 
     const lead = await createLead({
-      type: "anfrage",
+      type: "frage",
       name: payload.name,
       email: payload.email,
       phone: payload.phone,
-      subject: "Fahrzeug-Anfrage",
-      message: leadMessage,
+      subject: payload.subject,
+      message: mergedMessage,
       owner: "",
       nextFollowUp: "",
       notes: "",
-      budget: payload.budget,
-      carType: payload.carType,
-      fuelType: payload.fuelType,
-      transmission: payload.transmission,
-      driveType: payload.driveType,
-      equipment: equipmentText,
+      budget: "",
+      carType: "",
+      fuelType: "",
+      transmission: "",
+      driveType: "",
+      equipment: "",
       landingPage: payload.landingPage,
       referrer: payload.referrer,
       utmSource: payload.utmSource,
@@ -140,67 +117,64 @@ export async function POST(req: Request) {
       name: escapeHtml(payload.name),
       email: escapeHtml(payload.email),
       phone: escapeHtml(payload.phone || "-"),
-      budget: escapeHtml(budget),
-      carType: escapeHtml(payload.carType || "-"),
-      fuelType: escapeHtml(payload.fuelType || "-"),
-      transmission: escapeHtml(payload.transmission || "-"),
-      driveType: escapeHtml(payload.driveType || "-"),
-      equipment: escapeHtml(equipmentText),
-      message: escapeHtml(payload.message || "-"),
+      contactPreference: escapeHtml(payload.contactPreference || "E-Mail"),
+      subject: escapeHtml(payload.subject || "Ohne Betreff"),
+      message: escapeHtml(payload.message),
     };
 
-    const textBody = `Neue Carvoo Anfrage
+    const subjectText = payload.subject
+      ? `Neue Kontaktfrage: ${payload.subject}`
+      : "Neue Kontaktfrage";
+
+    const textBody = `Neue Kontaktfrage
 
 Name: ${payload.name}
 E-Mail: ${payload.email}
 Telefon: ${payload.phone || "-"}
-Budget: ${budget} CHF
-Fahrzeugtyp: ${payload.carType || "-"}
-Treibstoff: ${payload.fuelType || "-"}
-Getriebe: ${payload.transmission || "-"}
-Antriebsart: ${payload.driveType || "-"}
-Ausstattung: ${equipmentText}
+Kontaktweg: ${payload.contactPreference || "E-Mail"}
+Betreff: ${payload.subject || "Ohne Betreff"}
 
-Weitere Wünsche:
-${payload.message || "-"}`;
+Nachricht:
+${payload.message}`;
 
     const htmlBody = `
-      <h2>Neue Carvoo Anfrage</h2>
+      <h2>Neue Kontaktfrage</h2>
       <p><strong>Name:</strong> ${safe.name}</p>
       <p><strong>E-Mail:</strong> ${safe.email}</p>
       <p><strong>Telefon:</strong> ${safe.phone}</p>
-      <p><strong>Budget:</strong> ${safe.budget} CHF</p>
-      <p><strong>Fahrzeugtyp:</strong> ${safe.carType}</p>
-      <p><strong>Treibstoff:</strong> ${safe.fuelType}</p>
-      <p><strong>Getriebe:</strong> ${safe.transmission}</p>
-      <p><strong>Antriebsart:</strong> ${safe.driveType}</p>
-      <p><strong>Ausstattung:</strong> ${safe.equipment}</p>
-      <p><strong>Weitere Wünsche:</strong><br/>${safe.message}</p>
+      <p><strong>Kontaktweg:</strong> ${safe.contactPreference}</p>
+      <p><strong>Betreff:</strong> ${safe.subject}</p>
+      <p><strong>Nachricht:</strong><br/>${safe.message}</p>
     `;
 
     let emailSent = false;
 
     if (!process.env.RESEND_API_KEY) {
-      console.warn("RESEND_API_KEY missing, Anfrage nur im Lead-System gespeichert.");
+      console.warn(
+        "RESEND_API_KEY missing, Kontaktanfrage nur im Lead-System gespeichert."
+      );
     } else {
       try {
         await resend.emails.send({
           from: "Carvoo <onboarding@resend.dev>",
           to: "info@carvoo.ch",
           replyTo: payload.email,
-          subject: "Neue Carvoo Anfrage",
+          subject: subjectText,
           text: textBody,
           html: htmlBody,
         });
         emailSent = true;
       } catch (mailError) {
-        console.error("Request email send failed:", mailError);
+        console.error("Contact email send failed:", mailError);
       }
     }
 
     return NextResponse.json({ success: true, leadId: lead.id, emailSent });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "Fehler beim Senden" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Fehler beim Senden der Nachricht" },
+      { status: 500 }
+    );
   }
 }

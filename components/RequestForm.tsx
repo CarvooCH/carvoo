@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type FormState = {
   name: string;
@@ -10,7 +10,19 @@ type FormState = {
   carType: string;
   fuelType: string;
   transmission: string;
+  driveType: string;
+  equipment: string[];
   message: string;
+};
+
+type TrackingState = {
+  landingPage: string;
+  referrer: string;
+  utmSource: string;
+  utmMedium: string;
+  utmCampaign: string;
+  utmTerm: string;
+  utmContent: string;
 };
 
 const initialForm: FormState = {
@@ -21,15 +33,72 @@ const initialForm: FormState = {
   carType: "",
   fuelType: "",
   transmission: "",
+  driveType: "",
+  equipment: [],
   message: "",
+};
+
+const carTypeOptions = [
+  "SUV",
+  "Kombi",
+  "Limousine",
+  "Kleinwagen",
+  "Cabrio",
+  "Coupe",
+  "Van",
+  "Pick-up",
+  "Sportwagen",
+  "Andere",
+];
+
+const fuelTypeOptions = ["Benzin", "Diesel", "Hybrid", "Elektro", "Sonstiges"];
+const transmissionOptions = ["Automatikgetriebe", "Schaltgetriebe"];
+const driveTypeOptions = ["Vorderrad", "Hinterrad", "Allrad"];
+
+const equipmentOptions = [
+  "Navigationssystem",
+  "Rueckfahrkamera",
+  "Einparkhilfe",
+  "Tempomat",
+  "Sitzheizung",
+  "Ledersitze",
+  "Panoramadach",
+  "Apple CarPlay / Android Auto",
+  "Anhaengerkupplung",
+  "7 Sitze",
+];
+
+const initialTracking: TrackingState = {
+  landingPage: "",
+  referrer: "",
+  utmSource: "",
+  utmMedium: "",
+  utmCampaign: "",
+  utmTerm: "",
+  utmContent: "",
 };
 
 export default function RequestForm() {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<FormState>(initialForm);
+  const [tracking, setTracking] = useState<TrackingState>(initialTracking);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    setTracking({
+      landingPage: window.location.href,
+      referrer: document.referrer || "",
+      utmSource: params.get("utm_source") ?? "",
+      utmMedium: params.get("utm_medium") ?? "",
+      utmCampaign: params.get("utm_campaign") ?? "",
+      utmTerm: params.get("utm_term") ?? "",
+      utmContent: params.get("utm_content") ?? "",
+    });
+  }, []);
 
   function updateField(name: keyof FormState, value: string) {
     setForm((prev) => ({
@@ -52,11 +121,19 @@ export default function RequestForm() {
         setError("Bitte Name und E-Mail ausfüllen.");
         return false;
       }
+
+      const emailValue = form.email.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+        setError("Bitte gib eine gültige E-Mail-Adresse ein.");
+        return false;
+      }
     }
 
     if (currentStep === 2) {
-      if (!form.carType || !form.fuelType || !form.transmission) {
-        setError("Bitte Fahrzeugtyp, Antrieb und Getriebe auswählen.");
+      if (!form.carType || !form.fuelType || !form.transmission || !form.driveType) {
+        setError(
+          "Bitte Fahrzeugtyp, Treibstoff, Getriebe und Antriebsart auswählen."
+        );
         return false;
       }
     }
@@ -75,6 +152,19 @@ export default function RequestForm() {
     setStep((prev) => Math.max(prev - 1, 1));
   }
 
+  function toggleEquipment(item: string) {
+    setForm((prev) => {
+      const exists = prev.equipment.includes(item);
+      return {
+        ...prev,
+        equipment: exists
+          ? prev.equipment.filter((entry) => entry !== item)
+          : [...prev.equipment, item],
+      };
+    });
+    setError("");
+  }
+
   async function sendRequest() {
     setLoading(true);
     setSuccess(false);
@@ -86,11 +176,19 @@ export default function RequestForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, ...tracking }),
       });
 
       if (!res.ok) {
-        throw new Error("Request failed");
+        let message = "Etwas ist schiefgelaufen. Bitte versuche es erneut.";
+        try {
+          const payload = (await res.json()) as { error?: string };
+          if (payload.error) {
+            message = payload.error;
+          }
+        } catch {}
+        setError(message);
+        return;
       }
 
       setSuccess(true);
@@ -184,14 +282,7 @@ export default function RequestForm() {
               </label>
 
               <div className="flex gap-3 overflow-x-auto pb-2">
-                {[
-                  "SUV",
-                  "Limousine",
-                  "Kombi",
-                  "Sportwagen",
-                  "Elektro",
-                  "Cabrio",
-                ].map((type) => (
+                {carTypeOptions.map((type) => (
                   <button
                     key={type}
                     type="button"
@@ -210,11 +301,11 @@ export default function RequestForm() {
 
             <div>
               <label className="mb-3 block text-sm font-medium text-slate-700">
-                Antrieb
+                Treibstoff
               </label>
 
               <div className="flex flex-wrap gap-3">
-                {["Benzin", "Diesel", "Hybrid", "Elektro"].map((fuel) => (
+                {fuelTypeOptions.map((fuel) => (
                   <button
                     key={fuel}
                     type="button"
@@ -237,7 +328,7 @@ export default function RequestForm() {
               </label>
 
               <div className="flex gap-3">
-                {["Automatik", "Manuell"].map((gear) => (
+                {transmissionOptions.map((gear) => (
                   <button
                     key={gear}
                     type="button"
@@ -249,6 +340,52 @@ export default function RequestForm() {
                     }`}
                   >
                     {gear}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="mb-3 block text-sm font-medium text-slate-700">
+                Antriebsart
+              </label>
+
+              <div className="flex flex-wrap gap-3">
+                {driveTypeOptions.map((drive) => (
+                  <button
+                    key={drive}
+                    type="button"
+                    onClick={() => updateField("driveType", drive)}
+                    className={`rounded-2xl border px-4 py-2 text-sm shadow-sm transition ${
+                      form.driveType === drive
+                        ? "border-slate-900 bg-slate-900 text-white"
+                        : "border-slate-300 bg-white text-slate-700 hover:bg-slate-100"
+                    }`}
+                  >
+                    {drive}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="mb-3 block text-sm font-medium text-slate-700">
+                Gewünschte Ausstattung (optional)
+              </label>
+
+              <div className="flex flex-wrap gap-3">
+                {equipmentOptions.map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => toggleEquipment(item)}
+                    className={`rounded-2xl border px-4 py-2 text-sm shadow-sm transition ${
+                      form.equipment.includes(item)
+                        ? "border-violet-700 bg-violet-700 text-white"
+                        : "border-slate-300 bg-white text-slate-700 hover:bg-slate-100"
+                    }`}
+                  >
+                    {item}
                   </button>
                 ))}
               </div>
