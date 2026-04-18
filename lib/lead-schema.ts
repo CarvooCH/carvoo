@@ -35,6 +35,9 @@ export type LeadRecord = {
   transmission: string;
   driveType: string;
   equipment: string;
+  partnerForwardingConsent: boolean;
+  partnerForwardedOn: string;
+  partnerForwardedTo: string;
   landingPage: string;
   referrer: string;
   utmSource: string;

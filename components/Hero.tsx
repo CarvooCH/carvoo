@@ -28,7 +28,7 @@ export default function Hero() {
               href="#anfrage"
               className="inline-flex items-center rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition hover:scale-[1.02] hover:opacity-95"
             >
-              Kostenlos Anfrage starten
+              Suchauftrag anfragen
             </a>
 
             <a
@@ -40,7 +40,7 @@ export default function Hero() {
           </div>
 
           <div className="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-slate-600">
-            <span>✓ Kostenlos starten</span>
+            <span>✓ Klare Preisstruktur</span>
             <span>✓ Persönlicher Service</span>
             <span>✓ Schweizweit</span>
           </div>

@@ -6,7 +6,7 @@ import { createPageMetadata } from "@/lib/site";
 export const metadata = createPageMetadata({
   title: "Anfrage starten",
   description:
-    "Starte jetzt deine Carvoo Anfrage: teile uns Wunschfahrzeug und Budget mit und erhalte eine strukturierte Vorauswahl für passende Autos in der Schweiz.",
+    "Starte jetzt deine Carvoo Anfrage: teile uns Wunschfahrzeug und Budget mit, wir prüfen die Umsetzbarkeit und starten danach mit klarer Preisstruktur.",
   path: "/anfrage",
   keywords: [
     "Auto Anfrage Schweiz",
@@ -17,9 +17,11 @@ export const metadata = createPageMetadata({
 });
 
 const trustFacts = [
-  "Kostenlos und unverbindlich starten",
+  "Anfrage senden und Machbarkeit prüfen lassen",
+  "Auftragsannahme nur bei realistischer Umsetzbarkeit",
+  "Transparente Preislogik mit Suchgebühr und Erfolgsprovision",
   "Persönlicher Service in der Schweiz",
-  "Klare Rückmeldung statt automatischer Massenantwort",
+  "Klare Rückmeldung statt automatischer Massenantworten",
 ];
 
 export default function AnfragePage() {
@@ -28,7 +30,7 @@ export default function AnfragePage() {
       <PageIntro
         eyebrow="Anfrage"
         title="Starte jetzt deine Fahrzeugsuche mit Carvoo"
-        description="Je präziser deine Angaben, desto schneller können wir passende Optionen filtern. Das Formular dauert nur wenige Minuten."
+        description="Je präziser deine Angaben, desto schneller können wir die Umsetzbarkeit prüfen. Nach Auftragsbestätigung startet die Suche mit klar definiertem Preismodell."
       />
 
       <section className="mx-auto w-full max-w-7xl px-5 py-14 sm:px-6 lg:px-8">
@@ -43,7 +45,7 @@ export default function AnfragePage() {
                   Schritt 1
                 </p>
                 <p className="mt-2 font-semibold text-slate-900">
-                  Wir prüfen deine Angaben und sortieren Prioritäten.
+                  Wir prüfen deine Angaben und die Umsetzbarkeit.
                 </p>
               </li>
               <li className="rounded-2xl bg-slate-50 p-4">
@@ -51,7 +53,7 @@ export default function AnfragePage() {
                   Schritt 2
                 </p>
                 <p className="mt-2 font-semibold text-slate-900">
-                  Carvoo filtert passende Fahrzeugangebote für dich.
+                  Nach Auftragsbestätigung startet die Suche mit Suchgebühr.
                 </p>
               </li>
               <li className="rounded-2xl bg-slate-50 p-4">
@@ -59,10 +61,28 @@ export default function AnfragePage() {
                   Schritt 3
                 </p>
                 <p className="mt-2 font-semibold text-slate-900">
-                  Du erhältst eine strukturierte Auswahl für deinen Entscheid.
+                  Du erhältst eine strukturierte Auswahl passender Fahrzeuge.
                 </p>
               </li>
             </ol>
+
+            <div className="mt-6 rounded-2xl border border-violet-200 bg-violet-50 p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-violet-700">
+                Preisübersicht
+              </p>
+              <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-700">
+                <li>
+                  Suchgebühr vor Start: <strong>??? CHF</strong>
+                </li>
+                <li>
+                  Vermittlungsprovision bei Erfolg: <strong>??? %</strong> (mind.
+                  <strong> ??? CHF</strong>)
+                </li>
+                <li>
+                  Optionaler Fahrzeugcheck: <strong>??? CHF</strong> pro Fahrzeug
+                </li>
+              </ul>
+            </div>
 
             <ul className="mt-6 space-y-3 text-slate-700">
               {trustFacts.map((fact) => (
@@ -80,6 +100,20 @@ export default function AnfragePage() {
               className="mt-7 inline-flex rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
             >
               Nur eine Frage stellen
+            </Link>
+
+            <Link
+              href="/preise"
+              className="mt-3 inline-flex rounded-xl border border-violet-300 bg-violet-50 px-5 py-3 text-sm font-semibold text-violet-800 transition hover:bg-violet-100"
+            >
+              Preismodell im Detail
+            </Link>
+
+            <Link
+              href="/partner-werden"
+              className="mt-3 inline-flex rounded-xl border border-violet-300 bg-violet-50 px-5 py-3 text-sm font-semibold text-violet-800 transition hover:bg-violet-100"
+            >
+              Du bist Garage? Partner werden
             </Link>
           </aside>
 

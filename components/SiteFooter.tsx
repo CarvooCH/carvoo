@@ -6,6 +6,8 @@ const legalLinks = [
   { href: "/kontakt", label: "Frage stellen" },
   { href: "/faq", label: "Häufige Fragen" },
   { href: "/anfrage", label: "Anfrage" },
+  { href: "/partner-werden", label: "Garage Partner werden" },
+  { href: "/partner-login", label: "Partner Login" },
 ];
 
 export default function SiteFooter() {

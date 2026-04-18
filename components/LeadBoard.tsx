@@ -12,7 +12,14 @@ import {
 
 type LeadPatch = Pick<
   LeadRecord,
-  "status" | "priority" | "owner" | "nextFollowUp" | "notes"
+  | "status"
+  | "priority"
+  | "owner"
+  | "nextFollowUp"
+  | "notes"
+  | "partnerForwardingConsent"
+  | "partnerForwardedOn"
+  | "partnerForwardedTo"
 >;
 
 function toInputDate(value: string) {
@@ -47,6 +54,9 @@ export default function LeadBoard({ initialLeads }: { initialLeads: LeadRecord[]
           owner: lead.owner,
           nextFollowUp: toInputDate(lead.nextFollowUp),
           notes: lead.notes,
+          partnerForwardingConsent: lead.partnerForwardingConsent,
+          partnerForwardedOn: toInputDate(lead.partnerForwardedOn),
+          partnerForwardedTo: lead.partnerForwardedTo,
         },
       ])
     )
@@ -62,6 +72,9 @@ export default function LeadBoard({ initialLeads }: { initialLeads: LeadRecord[]
           owner: lead.owner,
           nextFollowUp: toInputDate(lead.nextFollowUp),
           notes: lead.notes,
+          partnerForwardingConsent: lead.partnerForwardingConsent,
+          partnerForwardedOn: toInputDate(lead.partnerForwardedOn),
+          partnerForwardedTo: lead.partnerForwardedTo,
         };
       }
       return next;
@@ -98,6 +111,9 @@ export default function LeadBoard({ initialLeads }: { initialLeads: LeadRecord[]
           owner: "",
           nextFollowUp: "",
           notes: "",
+          partnerForwardingConsent: false,
+          partnerForwardedOn: "",
+          partnerForwardedTo: "",
         }),
         [key]: value,
       },
@@ -224,6 +240,9 @@ export default function LeadBoard({ initialLeads }: { initialLeads: LeadRecord[]
               owner: lead.owner,
               nextFollowUp: toInputDate(lead.nextFollowUp),
               notes: lead.notes,
+              partnerForwardingConsent: lead.partnerForwardingConsent,
+              partnerForwardedOn: toInputDate(lead.partnerForwardedOn),
+              partnerForwardedTo: lead.partnerForwardedTo,
             };
 
             return (
@@ -243,6 +262,16 @@ export default function LeadBoard({ initialLeads }: { initialLeads: LeadRecord[]
                       <span className="rounded-full bg-violet-100 px-2 py-1 text-xs font-bold text-violet-800">
                         {leadTypeLabel[lead.type]}
                       </span>
+                      {lead.partnerForwardingConsent && (
+                        <span className="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-800">
+                          Partnerfreigabe
+                        </span>
+                      )}
+                      {!lead.partnerForwardingConsent && lead.type === "anfrage" && (
+                        <span className="rounded-full bg-slate-200 px-2 py-1 text-xs font-bold text-slate-700">
+                          Keine Partnerfreigabe
+                        </span>
+                      )}
                       {lead.utmSource && (
                         <span className="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-800">
                           UTM: {lead.utmSource}
@@ -336,6 +365,17 @@ export default function LeadBoard({ initialLeads }: { initialLeads: LeadRecord[]
                         <strong>Ausstattung:</strong> {lead.equipment}
                       </p>
                     )}
+                    {lead.type === "anfrage" && (
+                      <p>
+                        <strong>Partnerfreigabe (intern):</strong>{" "}
+                        {lead.partnerForwardingConsent ? "Ja" : "Nein"}
+                      </p>
+                    )}
+                    {lead.partnerForwardedTo && (
+                      <p>
+                        <strong>Weitergeleitet an:</strong> {lead.partnerForwardedTo}
+                      </p>
+                    )}
                     <p className="text-xs text-slate-500">
                       Quelle: {lead.utmSource || "-"} | Kampagne:{" "}
                       {lead.utmCampaign || "-"}
@@ -376,6 +416,71 @@ export default function LeadBoard({ initialLeads }: { initialLeads: LeadRecord[]
                     />
                   </label>
                 </div>
+
+                {lead.type === "anfrage" && (
+                  <div className="mt-3">
+                    <p className="text-xs font-semibold text-slate-600">
+                      Für Partnernetzwerk freigeben
+                    </p>
+                    <div className="mt-2 flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          updateDraft(lead.id, "partnerForwardingConsent", true)
+                        }
+                        className={`rounded-xl px-3 py-2 text-xs font-semibold transition ${
+                          draft.partnerForwardingConsent
+                            ? "bg-emerald-700 text-white"
+                            : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-100"
+                        }`}
+                      >
+                        Ja, freigegeben
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          updateDraft(lead.id, "partnerForwardingConsent", false)
+                        }
+                        className={`rounded-xl px-3 py-2 text-xs font-semibold transition ${
+                          !draft.partnerForwardingConsent
+                            ? "bg-slate-900 text-white"
+                            : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-100"
+                        }`}
+                      >
+                        Nein
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {lead.type === "anfrage" && draft.partnerForwardingConsent && (
+                  <div className="mt-3 grid gap-3 md:grid-cols-[1fr_180px]">
+                    <label className="text-xs font-semibold text-slate-600">
+                      Weitergeleitet an Partner
+                      <input
+                        type="text"
+                        value={draft.partnerForwardedTo}
+                        onChange={(e) =>
+                          updateDraft(lead.id, "partnerForwardedTo", e.target.value)
+                        }
+                        placeholder="z. B. Garage Muster AG, Autohaus XY"
+                        className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900"
+                      />
+                    </label>
+
+                    <label className="text-xs font-semibold text-slate-600">
+                      Weitergeleitet am
+                      <input
+                        type="date"
+                        value={draft.partnerForwardedOn}
+                        onChange={(e) =>
+                          updateDraft(lead.id, "partnerForwardedOn", e.target.value)
+                        }
+                        className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900"
+                      />
+                    </label>
+                  </div>
+                )}
 
                 <label className="mt-3 block text-xs font-semibold text-slate-600">
                   Interne Notizen

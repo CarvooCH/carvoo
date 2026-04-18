@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
+import DealerUserBoard from "@/components/DealerUserBoard";
 import FormBriefingBoard from "@/components/FormBriefingBoard";
+import GaragePartnerBoard from "@/components/GaragePartnerBoard";
 import LeadBoard from "@/components/LeadBoard";
 import PageIntro from "@/components/PageIntro";
+import { listDealerUsers } from "@/lib/dealer-users";
 import { readFormBriefing } from "@/lib/form-briefing";
+import { listGaragePartners } from "@/lib/garage-partners";
 import { listLeads } from "@/lib/leads";
 import { createPageMetadata } from "@/lib/site";
 
 const baseMetadata = createPageMetadata({
   title: "Projektzentrale",
   description:
-    "Interne Carvoo Projektzentrale zur Bearbeitung von Anfragen und Kontaktfragen.",
+    "Interne Carvoo Projektzentrale zur Bearbeitung von Anfragen, Kontaktfragen und Garage-Partnern.",
   path: "/projektzentrale",
 });
 
@@ -22,7 +26,12 @@ export const metadata: Metadata = {
 };
 
 export default async function ProjektzentralePage() {
-  const [leads, briefing] = await Promise.all([listLeads(), readFormBriefing()]);
+  const [leads, briefing, partners, dealerUsers] = await Promise.all([
+    listLeads(),
+    readFormBriefing(),
+    listGaragePartners(),
+    listDealerUsers(),
+  ]);
 
   return (
     <>
@@ -33,7 +42,9 @@ export default async function ProjektzentralePage() {
       />
 
       <FormBriefingBoard initialBriefing={briefing} />
+      <DealerUserBoard initialUsers={dealerUsers} />
       <LeadBoard initialLeads={leads} />
+      <GaragePartnerBoard initialPartners={partners} />
     </>
   );
 }

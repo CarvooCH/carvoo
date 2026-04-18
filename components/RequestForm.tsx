@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 type FormState = {
@@ -57,14 +58,14 @@ const driveTypeOptions = ["Vorderrad", "Hinterrad", "Allrad"];
 
 const equipmentOptions = [
   "Navigationssystem",
-  "Rueckfahrkamera",
+  "Rückfahrkamera",
   "Einparkhilfe",
   "Tempomat",
   "Sitzheizung",
   "Ledersitze",
   "Panoramadach",
   "Apple CarPlay / Android Auto",
-  "Anhaengerkupplung",
+  "Anhängerkupplung",
   "7 Sitze",
 ];
 
@@ -77,6 +78,12 @@ const initialTracking: TrackingState = {
   utmTerm: "",
   utmContent: "",
 };
+
+const pricingSummary = [
+  "Suchgebühr vor Start: ??? CHF",
+  "Vermittlungsprovision bei Erfolg: ??? % (mind. ??? CHF)",
+  "Optionaler Fahrzeugcheck: ??? CHF pro Fahrzeug",
+];
 
 export default function RequestForm() {
   const [step, setStep] = useState(1);
@@ -100,7 +107,7 @@ export default function RequestForm() {
     });
   }, []);
 
-  function updateField(name: keyof FormState, value: string) {
+  function updateField<K extends keyof FormState>(name: K, value: FormState[K]) {
     setForm((prev) => ({
       ...prev,
       [name]: value,
@@ -112,7 +119,7 @@ export default function RequestForm() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
     const { name, value } = e.target;
-    updateField(name as keyof FormState, value);
+    updateField(name as keyof FormState, value as FormState[keyof FormState]);
   }
 
   function validateStep(currentStep: number) {
@@ -209,7 +216,7 @@ export default function RequestForm() {
     <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm md:p-8">
       <div className="mb-8">
         <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600">
-          Kostenlos & unverbindlich
+          Anfrage einreichen
         </div>
 
         <h3 className="mt-4 text-2xl font-semibold text-slate-900">
@@ -240,6 +247,26 @@ export default function RequestForm() {
             style={{ width: progressWidth }}
           />
         </div>
+      </div>
+
+      <div className="mb-8 rounded-2xl border border-violet-200 bg-violet-50 p-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-violet-700">
+          Preisstruktur
+        </p>
+        <ul className="mt-3 space-y-1 text-sm leading-7 text-slate-700">
+          {pricingSummary.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+        <p className="mt-3 text-xs text-slate-600">
+          Die Suchgebühr wird bei erfolgreichem Kauf auf die Provision angerechnet.
+        </p>
+        <Link
+          href="/preise"
+          className="mt-4 inline-flex rounded-xl border border-violet-300 bg-white px-4 py-2 text-xs font-semibold text-violet-800 transition hover:bg-violet-100"
+        >
+          Vollständiges Preismodell ansehen
+        </Link>
       </div>
 
       <div className="space-y-8">
@@ -452,6 +479,7 @@ export default function RequestForm() {
                 className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:ring-2 focus:ring-slate-900"
               />
             </div>
+
           </div>
         )}
 

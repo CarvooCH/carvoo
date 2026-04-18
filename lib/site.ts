@@ -13,9 +13,11 @@ export const siteConfig = {
 export const primaryNavigation = [
   { href: "/", label: "Start" },
   { href: "/leistungen", label: "Leistungen" },
+  { href: "/preise", label: "Preise" },
   { href: "/ablauf", label: "Ablauf" },
   { href: "/ueber-uns", label: "Über uns" },
   { href: "/faq", label: "FAQ" },
+  { href: "/partner-werden", label: "Partner werden" },
   { href: "/kontakt", label: "Kontakt" },
 ] as const;
 

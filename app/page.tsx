@@ -6,7 +6,7 @@ import { createPageMetadata, siteConfig } from "@/lib/site";
 export const metadata = createPageMetadata({
   title: "Auto-Suchservice Schweiz",
   description:
-    "Carvoo findet passende Autos für dich: persönliche Vorauswahl, strukturierter Suchprozess und weniger Stress beim Fahrzeugkauf in der Schweiz.",
+    "Carvoo findet passende Autos für dich: persönliche Vorauswahl, strukturierter Suchprozess und transparentes Preismodell in der Schweiz.",
   path: "/",
   keywords: [
     "Auto Suchservice Schweiz",
@@ -14,6 +14,7 @@ export const metadata = createPageMetadata({
     "Fahrzeugsuche Service",
     "Gebrauchtwagen Suche Schweiz",
     "Auto Beratung Schweiz",
+    "Auto Suchservice Preise",
   ],
 });
 
@@ -44,8 +45,8 @@ const valuePoints = [
     text: "Wir konzentrieren uns auf passende Fahrzeuge statt auf reine Masse. Du erhältst klarere Optionen für bessere Entscheidungen.",
   },
   {
-    title: "Persönliche Begleitung",
-    text: "Keine anonyme Plattformlogik: Wir arbeiten mit deinen Kriterien, deinem Budget und deinem realen Nutzungsprofil.",
+    title: "Klare Preislogik",
+    text: "Vor dem Start erhältst du volle Kostentransparenz: Suchgebühr, Provision bei Erfolg und optionale Zusatzleistungen.",
   },
 ];
 
@@ -53,17 +54,22 @@ const processPreview = [
   {
     step: "01",
     title: "Anfrage senden",
-    text: "Du gibst uns in wenigen Minuten alle wichtigen Eckdaten zu Wunschauto und Budget.",
+    text: "Du gibst uns alle wichtigen Eckdaten zu Wunschauto, Budget und Prioritäten.",
   },
   {
     step: "02",
-    title: "Wir filtern den Markt",
-    text: "Carvoo priorisiert Angebote, prüft Plausibilität und trennt früh unpassende Fahrzeuge aus.",
+    title: "Machbarkeit klären",
+    text: "Wir prüfen deine Anfrage seriös und bestätigen den Suchauftrag nur bei realistischer Umsetzbarkeit.",
   },
   {
     step: "03",
-    title: "Passende Optionen erhalten",
-    text: "Du bekommst eine fokussierte Auswahl mit klarerem Entscheidungsfundament.",
+    title: "Suche aktiv starten",
+    text: "Nach Auftragsbestätigung beginnt die strukturierte Suche mit fokussierter Vorauswahl.",
+  },
+  {
+    step: "04",
+    title: "Passende Fahrzeuge erhalten",
+    text: "Du erhältst eine klare Auswahl passender Optionen für eine sichere Entscheidung.",
   },
 ];
 
@@ -81,9 +87,9 @@ export default function Home() {
       <PageIntro
         eyebrow="Auto-Suchservice Schweiz"
         title="Wir finden das passende Auto für dich und sparen dir den Suchstress."
-        description="Carvoo ist dein persönlicher Auto-Suchservice in der Schweiz. Du nennst Kriterien und Budget, wir übernehmen Vorauswahl, Filterung und den strukturierten Prozess bis zu passenden Optionen."
-        primaryCta={{ href: "/anfrage", label: "Kostenlos Anfrage starten" }}
-        secondaryCta={{ href: "/leistungen", label: "Leistungen ansehen" }}
+        description="Carvoo ist dein persönlicher Auto-Suchservice in der Schweiz. Du nennst Kriterien und Budget, wir übernehmen Vorauswahl, Filterung und den strukturierten Prozess. Vor Suchstart ist die Preisstruktur klar definiert."
+        primaryCta={{ href: "/anfrage", label: "Suchauftrag anfragen" }}
+        secondaryCta={{ href: "/preise", label: "Preise ansehen" }}
       />
 
       <section className="mx-auto w-full max-w-7xl px-5 py-14 sm:px-6 lg:px-8">
@@ -121,10 +127,16 @@ export default function Home() {
                 Vollen Ablauf sehen
               </Link>
               <Link
+                href="/preise"
+                className="rounded-xl border border-violet-200 bg-violet-50 px-5 py-3 text-sm font-semibold text-violet-700 transition hover:bg-violet-100"
+              >
+                Preise ansehen
+              </Link>
+              <Link
                 href="/anfrage"
                 className="rounded-xl bg-gradient-to-r from-[#241ab6] via-[#5420bb] to-[#8a28c2] px-5 py-3 text-sm font-semibold !text-white [text-shadow:0_1px_1px_rgba(0,0,0,0.45)] transition hover:brightness-105"
               >
-                Direkt starten
+                Suchauftrag anfragen
               </Link>
               <Link
                 href="/kontakt"
@@ -135,7 +147,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
             {processPreview.map((item) => (
               <article
                 key={item.step}
@@ -181,18 +193,31 @@ export default function Home() {
               Nächster Schritt
             </p>
             <h3 className="mt-3 text-2xl font-black text-slate-950">
-              In wenigen Minuten starten
+              In wenigen Minuten zur klaren Kostenbasis
             </h3>
             <p className="mt-3 leading-7 text-slate-700">
               Über das Anfrageformular definierst du Fahrzeugtyp, Budget,
               Präferenzen und weitere Wünsche. Danach übernehmen wir die
               strukturierte Suche.
             </p>
+            <div className="mt-4 rounded-xl border border-violet-200 bg-white p-4 text-sm text-slate-700">
+              <p className="font-semibold text-slate-900">Transparente Kostenlogik</p>
+              <p className="mt-1">
+                Suchgebühr: <strong>??? CHF</strong> · Provision bei Erfolg:{" "}
+                <strong>??? %</strong> · Fahrzeugcheck optional: <strong>??? CHF</strong>
+              </p>
+            </div>
             <Link
               href="/anfrage"
               className="mt-6 inline-flex rounded-xl bg-gradient-to-r from-[#241ab6] via-[#5420bb] to-[#8a28c2] px-5 py-3 text-sm font-bold !text-white [text-shadow:0_1px_1px_rgba(0,0,0,0.45)]"
             >
-              Anfrage ausfüllen
+              Suchauftrag anfragen
+            </Link>
+            <Link
+              href="/preise"
+              className="mt-3 inline-flex rounded-xl border border-violet-300 bg-white px-5 py-3 text-sm font-semibold text-violet-800 transition hover:bg-violet-100"
+            >
+              Zum vollständigen Preismodell
             </Link>
             <Link
               href="/kontakt"

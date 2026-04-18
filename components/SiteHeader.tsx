@@ -66,12 +66,20 @@ export default function SiteHeader() {
           ))}
         </nav>
 
-        <Link
-          href="/anfrage"
-          className="hidden rounded-xl bg-gradient-to-r from-[#241ab6] via-[#5420bb] to-[#8a28c2] px-4 py-2.5 text-sm font-bold !text-white [text-shadow:0_1px_1px_rgba(0,0,0,0.45)] shadow-[0_10px_30px_-16px_rgba(103,41,222,0.55)] transition hover:translate-y-[-1px] md:inline-flex"
-        >
-          Kostenlos starten
-        </Link>
+        <div className="hidden items-center gap-2 md:flex">
+          <Link
+            href="/partner-login"
+            className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+          >
+            Partner Login
+          </Link>
+          <Link
+            href="/anfrage"
+            className="rounded-xl bg-gradient-to-r from-[#241ab6] via-[#5420bb] to-[#8a28c2] px-4 py-2.5 text-sm font-bold !text-white [text-shadow:0_1px_1px_rgba(0,0,0,0.45)] shadow-[0_10px_30px_-16px_rgba(103,41,222,0.55)] transition hover:translate-y-[-1px]"
+          >
+            Suchauftrag anfragen
+          </Link>
+        </div>
       </div>
 
       {isOpen && (
@@ -101,7 +109,15 @@ export default function SiteHeader() {
               onClick={() => setIsOpen(false)}
               className="mt-3 inline-flex w-full justify-center rounded-xl bg-gradient-to-r from-[#241ab6] via-[#5420bb] to-[#8a28c2] px-4 py-3 text-sm font-bold !text-white [text-shadow:0_1px_1px_rgba(0,0,0,0.45)]"
             >
-              Anfrage starten
+              Suchauftrag anfragen
+            </Link>
+
+            <Link
+              href="/partner-login"
+              onClick={() => setIsOpen(false)}
+              className="inline-flex w-full justify-center rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+            >
+              Partner Login
             </Link>
           </div>
         </nav>

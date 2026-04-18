@@ -8,6 +8,9 @@ type LeadUpdateBody = {
   owner?: string;
   nextFollowUp?: string;
   notes?: string;
+  partnerForwardingConsent?: boolean;
+  partnerForwardedOn?: string;
+  partnerForwardedTo?: string;
 };
 
 function parseUpdate(data: unknown): LeadUpdateBody {
@@ -32,6 +35,18 @@ function parseUpdate(data: unknown): LeadUpdateBody {
 
   if (typeof source.notes === "string") {
     result.notes = source.notes;
+  }
+
+  if (typeof source.partnerForwardingConsent === "boolean") {
+    result.partnerForwardingConsent = source.partnerForwardingConsent;
+  }
+
+  if (typeof source.partnerForwardedOn === "string") {
+    result.partnerForwardedOn = source.partnerForwardedOn;
+  }
+
+  if (typeof source.partnerForwardedTo === "string") {
+    result.partnerForwardedTo = source.partnerForwardedTo;
   }
 
   return result;
@@ -87,6 +102,18 @@ export async function PATCH(
 
     if (payload.notes !== undefined) {
       update.notes = payload.notes;
+    }
+
+    if (payload.partnerForwardingConsent !== undefined) {
+      update.partnerForwardingConsent = payload.partnerForwardingConsent;
+    }
+
+    if (payload.partnerForwardedOn !== undefined) {
+      update.partnerForwardedOn = payload.partnerForwardedOn;
+    }
+
+    if (payload.partnerForwardedTo !== undefined) {
+      update.partnerForwardedTo = payload.partnerForwardedTo;
     }
 
     const updated = await updateLead(id, update);

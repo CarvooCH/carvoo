@@ -5,54 +5,70 @@ import { createPageMetadata } from "@/lib/site";
 export const metadata = createPageMetadata({
   title: "Ablauf",
   description:
-    "So funktioniert Carvoo Schritt für Schritt: von der Anfrage bis zur passenden Fahrzeugauswahl für deinen Auto-Kauf in der Schweiz.",
+    "So läuft Carvoo Schritt für Schritt: von der Anfrage über Suchgebühr und aktive Suche bis zur passenden Fahrzeugauswahl in der Schweiz.",
   path: "/ablauf",
   keywords: [
     "Auto Suche Ablauf",
+    "Suchauftrag Ablauf Schweiz",
     "Carvoo Prozess",
-    "Fahrzeug Auswahl Schweiz",
-    "Auto Kauf Struktur",
+    "Fahrzeugauswahl Schweiz",
+    "Auto Kauf Ablauf",
   ],
 });
 
 const steps = [
   {
-    title: "Anfrage und Zielbild",
+    title: "Suchanfrage stellen",
     description:
-      "Du definierst Fahrzeugtyp, Budget und Prioritäten. Damit schaffen wir ein klares Suchprofil statt einer unscharfen Wunschliste.",
+      "Du teilst uns deine Kriterien mit, zum Beispiel Budget, Fahrzeugtyp, Antrieb, Getriebe und wichtige Ausstattungen.",
   },
   {
-    title: "Markt-Sichtung und Vorauswahl",
+    title: "Machbarkeit prüfen",
     description:
-      "Wir filtern Inserate anhand deiner Kriterien und trennen unpassende Optionen früh aus, um den Fokus auf relevante Fahrzeuge zu halten.",
+      "Wir prüfen jede Anfrage auf realistische Umsetzbarkeit und nehmen nur Suchaufträge an, die wir seriös erfüllen können.",
   },
   {
-    title: "Prüfung auf Plausibilität",
+    title: "Auftrag bestätigen",
     description:
-      "Carvoo achtet auf stimmige Eckdaten und reduziert typische Fehlgriffe, die bei der eigenständigen Suche oft erst spät auffallen.",
+      "Nach gemeinsamer Bestätigung des Auftrags wird die Suchgebühr fällig und der Suchauftrag offiziell gestartet.",
   },
   {
-    title: "Klarer Entscheidungsrahmen",
+    title: "Aktive Suche starten",
     description:
-      "Du erhältst eine verdauliche Auswahl und kannst mit mehr Sicherheit entscheiden, wie es im Kaufprozess weitergeht.",
+      "Wir recherchieren den Markt, filtern unpassende Angebote und priorisieren passende Fahrzeuge für dein Profil.",
+  },
+  {
+    title: "Passende Fahrzeuge erhalten",
+    description:
+      "Du bekommst eine strukturierte Auswahl mit relevanten Optionen statt einer unübersichtlichen Massenliste.",
+  },
+  {
+    title: "Optional Fahrzeugcheck",
+    description:
+      "Auf Wunsch übernehmen wir Besichtigungen, Probefahrten, Zustandsanalyse sowie Foto- und Videodokumentation.",
+  },
+  {
+    title: "Provision nur bei Erfolg",
+    description:
+      "Kommt ein Kauf zustande, fällt die Vermittlungsprovision an. Die bereits bezahlte Suchgebühr wird angerechnet.",
   },
 ];
 
 const expectations = [
   {
-    title: "Wofür wir stehen",
+    title: "Leistungsumfang",
     points: [
-      "Persönliche Betreuung statt anonymem Massenprozess",
-      "Klarer Ablauf mit nachvollziehbaren Schritten",
-      "Fokus auf passende Optionen statt auf Menge",
+      "Ein Auftrag gilt als erfüllt bei 1-5 passenden Fahrzeugen",
+      "Die Fahrzeuge orientieren sich an deinen vereinbarten Suchkriterien",
+      "Die Suche läuft je nach Auftrag in der Regel über 14-30 Tage",
     ],
   },
   {
-    title: "Was du einplanen solltest",
+    title: "Preislogik",
     points: [
-      "Je genauer deine Anfrage, desto effizienter die Vorauswahl",
-      "Ein realistisch gesetztes Budget verbessert Trefferquote",
-      "Rückfragen sind Teil eines seriösen Suchprozesses",
+      "Suchgebühr vor Start: ??? CHF (nicht rückerstattbar)",
+      "Vermittlungsprovision bei Erfolg: ??? % (mindestens ??? CHF)",
+      "Optionaler Fahrzeugcheck: ??? CHF pro Fahrzeug",
     ],
   },
 ];
@@ -62,10 +78,10 @@ export default function AblaufPage() {
     <>
       <PageIntro
         eyebrow="Ablauf"
-        title="In vier klaren Schritten zur passenden Fahrzeugauswahl"
-        description="Unser Prozess ist auf Verständlichkeit, Geschwindigkeit und Entscheidungsqualität ausgelegt. So bleibt die Suche strukturiert und nicht überladen."
-        primaryCta={{ href: "/anfrage", label: "Schritt 1 starten" }}
-        secondaryCta={{ href: "/leistungen", label: "Leistungen" }}
+        title="In sieben klaren Schritten zur passenden Fahrzeugauswahl"
+        description="Unser Ablauf ist klar strukturiert: von der Anfrage über die Suchgebühr bis zur fokussierten Fahrzeugauswahl und optionalen Checks."
+        primaryCta={{ href: "/anfrage", label: "Suchauftrag anfragen" }}
+        secondaryCta={{ href: "/preise", label: "Preismodell ansehen" }}
       />
 
       <section className="mx-auto w-full max-w-7xl px-5 py-14 sm:px-6 lg:px-8">
@@ -126,13 +142,19 @@ export default function AblaufPage() {
               href="/anfrage"
               className="rounded-xl bg-gradient-to-r from-[#241ab6] via-[#5420bb] to-[#8a28c2] px-5 py-3 text-sm font-semibold !text-white [text-shadow:0_1px_1px_rgba(0,0,0,0.45)] transition hover:brightness-105"
             >
-              Anfrage absenden
+              Suchauftrag anfragen
             </Link>
             <Link
               href="/kontakt"
               className="rounded-xl border border-violet-200 bg-white px-5 py-3 text-sm font-semibold text-violet-700 transition hover:bg-violet-100"
             >
               Erst eine Frage stellen
+            </Link>
+            <Link
+              href="/preise"
+              className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+            >
+              Preise im Detail
             </Link>
           </div>
         </div>

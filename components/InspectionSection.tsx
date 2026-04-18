@@ -25,7 +25,7 @@ export default function Hero() {
               href="#anfrage"
               className="inline-flex items-center rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition hover:scale-[1.02] hover:opacity-95"
             >
-              Anfrage starten
+              Suchauftrag anfragen
             </a>
 
             <a

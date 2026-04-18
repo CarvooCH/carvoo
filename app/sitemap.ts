@@ -4,11 +4,13 @@ import { siteConfig } from "@/lib/site";
 const routes = [
   "/",
   "/leistungen",
+  "/preise",
   "/ablauf",
   "/ueber-uns",
   "/faq",
   "/kontakt",
   "/anfrage",
+  "/partner-werden",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

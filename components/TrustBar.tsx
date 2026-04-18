@@ -5,7 +5,7 @@ export default function TrustBar() {
         <span>✓ Persönlicher Service</span>
         <span>✓ Geprüfte Vorauswahl</span>
         <span>✓ Schweizweit verfügbar</span>
-        <span>✓ Kostenlos starten</span>
+        <span>✓ Klare Preisstruktur</span>
       </div>
     </section>
   );

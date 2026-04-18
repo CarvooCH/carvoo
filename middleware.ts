@@ -10,6 +10,14 @@ function unauthorized() {
 }
 
 export function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  const isPublicGaragePartnerSignup =
+    pathname === "/api/garage-partners" && request.method === "POST";
+
+  if (isPublicGaragePartnerSignup) {
+    return NextResponse.next();
+  }
+
   const user = process.env.PROJEKTZENTRALE_USER;
   const pass = process.env.PROJEKTZENTRALE_PASS;
 
@@ -43,5 +51,7 @@ export const config = {
     "/projektzentrale/:path*",
     "/api/leads/:path*",
     "/api/form-briefing/:path*",
+    "/api/garage-partners/:path*",
+    "/api/dealer-users/:path*",
   ],
 };

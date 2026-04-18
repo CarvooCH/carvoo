@@ -33,6 +33,16 @@ const faqs = [
       "Über das Anfrageformular auf der Seite /anfrage. Dort definierst du Kontaktangaben, Fahrzeugpräferenzen und Budget. Danach melden wir uns mit den nächsten Schritten.",
   },
   {
+    question: "Wie ist das Preismodell aufgebaut?",
+    answer:
+      "Das Modell besteht aus drei Teilen: Suchgebühr vor Start (??? CHF), Vermittlungsprovision bei erfolgreichem Kauf (??? % mit Mindestbetrag ??? CHF) und optionaler Fahrzeugcheck (??? CHF pro Fahrzeug).",
+  },
+  {
+    question: "Wird die Suchgebühr angerechnet?",
+    answer:
+      "Ja. Bei erfolgreichem Kauf wird die bezahlte Suchgebühr auf die Vermittlungsprovision angerechnet. Ohne erfolgreichen Kauf bleibt die Suchgebühr nicht rückerstattbar.",
+  },
+  {
     question: "Für welche Regionen ist Carvoo verfügbar?",
     answer:
       "Carvoo arbeitet schweizweit und unterstützt Suchanfragen für Angebote in der gesamten Schweiz.",
@@ -109,7 +119,7 @@ export default function FaqPage() {
               href="/anfrage"
               className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
             >
-              Zur Fahrzeug-Anfrage
+              Suchauftrag anfragen
             </Link>
           </div>
         </div>

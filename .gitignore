@@ -25,6 +25,8 @@
 *.pem
 data/leads.json
 data/form-briefing.json
+data/garage-partners.json
+data/dealer-users.json
 
 # debug
 npm-debug.log*

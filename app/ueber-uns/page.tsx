@@ -43,8 +43,8 @@ export default function UeberUnsPage() {
       <PageIntro
         eyebrow="Über Carvoo"
         title="Ein moderner Service für eine stressfreie Autosuche"
-        description="Carvoo wurde mit einem klaren Ziel aufgebaut: Menschen in der Schweiz beim Fahrzeugkauf persönlich zu entlasten und bessere Entscheidungen zu ermöglichen."
-        primaryCta={{ href: "/anfrage", label: "Mit Carvoo starten" }}
+        description="Carvoo wurde mit einem klaren Ziel aufgebaut: Menschen in der Schweiz beim Fahrzeugkauf persönlich zu entlasten. Unser Ablauf ist strukturiert und die Kosten sind vor dem Suchstart klar definiert."
+        primaryCta={{ href: "/anfrage", label: "Suchauftrag anfragen" }}
         secondaryCta={{ href: "/leistungen", label: "Leistungen" }}
       />
 
@@ -88,7 +88,7 @@ export default function UeberUnsPage() {
               href="/anfrage"
               className="mt-8 inline-flex rounded-xl bg-gradient-to-r from-[#241ab6] via-[#5420bb] to-[#8a28c2] px-5 py-3 text-sm font-bold !text-white [text-shadow:0_1px_1px_rgba(0,0,0,0.45)]"
             >
-              Anfrage einreichen
+              Suchauftrag anfragen
             </Link>
             <Link
               href="/kontakt"
@@ -130,12 +130,16 @@ export default function UeberUnsPage() {
             Das Anfrageformular dauert nur wenige Minuten. Danach starten wir
             mit einer strukturierten Vorauswahl für dein Wunschfahrzeug.
           </p>
+          <p className="mt-4 max-w-2xl text-sm font-semibold text-slate-800">
+            Suchgebühr: ??? CHF · Provision bei Erfolg: ??? % (mind. ??? CHF) ·
+            Fahrzeugcheck optional: ??? CHF
+          </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
               href="/anfrage"
               className="rounded-xl bg-gradient-to-r from-[#241ab6] via-[#5420bb] to-[#8a28c2] px-5 py-3 text-sm font-semibold !text-white [text-shadow:0_1px_1px_rgba(0,0,0,0.45)] transition hover:brightness-105"
             >
-              Kostenlos beginnen
+              Suchauftrag anfragen
             </Link>
             <Link
               href="/kontakt"

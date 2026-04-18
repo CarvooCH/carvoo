@@ -5,7 +5,7 @@ import { createPageMetadata } from "@/lib/site";
 export const metadata = createPageMetadata({
   title: "Leistungen",
   description:
-    "Übersicht aller Carvoo Leistungen: strukturierte Fahrzeugsuche, Angebotsfilterung und persönliche Begleitung beim Auto-Kauf in der Schweiz.",
+    "Übersicht aller Carvoo Leistungen: strukturierte Fahrzeugsuche, Angebotsfilterung, persönliche Begleitung und transparentes Preismodell in der Schweiz.",
   path: "/leistungen",
   keywords: [
     "Auto Suchservice Leistungen",
@@ -40,7 +40,7 @@ const included = [
 const notIncluded = [
   "Eigener Marktplatz mit Tausenden Live-Inseraten",
   "Automatisierter Blindkauf ohne Rückfragen",
-  "Unverbindliche Massen-Empfehlungen ohne Filter",
+  "Unklare Massen-Empfehlungen ohne Filter",
 ];
 
 export default function LeistungenPage() {
@@ -50,8 +50,8 @@ export default function LeistungenPage() {
         eyebrow="Leistungen"
         title="Was Carvoo konkret für deine Autosuche übernimmt"
         description="Unser Fokus liegt auf klarer Vorauswahl und persönlicher Unterstützung statt Informationsüberlastung. Hier siehst du transparent, was enthalten ist und worauf wir bewusst verzichten."
-        primaryCta={{ href: "/anfrage", label: "Anfrage starten" }}
-        secondaryCta={{ href: "/ablauf", label: "Ablauf ansehen" }}
+        primaryCta={{ href: "/anfrage", label: "Suchauftrag anfragen" }}
+        secondaryCta={{ href: "/preise", label: "Preise ansehen" }}
       />
 
       <section className="mx-auto w-full max-w-7xl px-5 py-14 sm:px-6 lg:px-8">
@@ -67,6 +67,29 @@ export default function LeistungenPage() {
               <p className="mt-4 leading-7 text-slate-700">{pillar.body}</p>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-7xl px-5 pb-14 sm:px-6 lg:px-8">
+        <div className="rounded-2xl border border-violet-200 bg-violet-50 p-6">
+          <h2 className="text-2xl font-black tracking-tight text-slate-950">
+            Transparente Preisstruktur
+          </h2>
+          <p className="mt-3 max-w-3xl leading-7 text-slate-700">
+            Die Suche startet mit einer klaren Suchgebühr, bei erfolgreichem Kauf
+            fällt eine Provision an, und Besichtigung oder Fahrzeugcheck können
+            optional dazugebucht werden.
+          </p>
+          <p className="mt-3 text-sm font-semibold text-slate-800">
+            Suchgebühr: ??? CHF · Provision bei Erfolg: ??? % (mind. ??? CHF) ·
+            Fahrzeugcheck optional: ??? CHF
+          </p>
+          <Link
+            href="/preise"
+            className="mt-5 inline-flex rounded-xl border border-violet-300 bg-white px-5 py-3 text-sm font-semibold text-violet-800 transition hover:bg-violet-100"
+          >
+            Zum Preismodell
+          </Link>
         </div>
       </section>
 
@@ -112,7 +135,7 @@ export default function LeistungenPage() {
             Bereit für weniger Suchaufwand?
           </h2>
           <p className="mt-4 max-w-3xl leading-8 text-slate-700">
-            Starte mit einer unverbindlichen Anfrage. Je klarer deine Angaben,
+            Starte mit einer Anfrage zur Machbarkeitsprüfung. Je klarer deine Angaben,
             desto schneller können wir passende Fahrzeugoptionen für dich
             priorisieren.
           </p>
@@ -121,7 +144,7 @@ export default function LeistungenPage() {
               href="/anfrage"
               className="rounded-xl bg-gradient-to-r from-[#241ab6] via-[#5420bb] to-[#8a28c2] px-5 py-3 text-sm font-bold !text-white [text-shadow:0_1px_1px_rgba(0,0,0,0.45)]"
             >
-              Jetzt Anfrage ausfüllen
+              Suchauftrag anfragen
             </Link>
             <Link
               href="/kontakt"
